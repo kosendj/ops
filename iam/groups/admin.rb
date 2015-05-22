@@ -1,0 +1,46 @@
+group "admin", path: path do
+  policy "admin-access" do
+    {
+      "Version"=>"2012-10-17",
+      "Statement"=>[
+        {
+          "Effect"=>"Allow", "Action"=>["*"], "Resource"=>["*"],
+        },
+        {
+          "Effect"=>"Deny",
+          "Action"=>[
+            "iam:DeactivateMFADevice",
+            "ec2:CreateVpcPeeringConnection",
+            "ec2:AcceptVpcPeeringConnection",
+            "route53:DeleteHostedZone",
+          ],
+          "Resource"=>["*"],
+        },
+        {
+          "Effect"=>"Deny",
+          "Action"=>[
+            "cloudwatch:DeleteAlarms",
+          ],
+          "Resource"=>["*"],
+        },
+        {
+          "Effect"=>"Deny",
+          "Action"=>[
+            "aws-portal:ModifyBilling",
+            "aws-portal:ModifyAccount",
+            "aws-portal:ModifyPaymentMethods",
+          ],
+          "Resource"=>["*"],
+        },
+        {
+          "Effect"=>"Deny",
+          "Action"=>[
+            "cloudtrail:UpdateTrail",
+            "cloudtrail:StopLogging",
+          ],
+          "Resource"=>["*"],
+        },
+      ]
+    }
+  end
+end

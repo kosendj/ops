@@ -1,0 +1,9 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Dir["#{__dir__}/{users,groups,roles}/**/*.rb"].each do |name|
+  rb = File.read(name)
+  path = File.dirname(name.sub(/^#{Regexp.escape(__dir__)}\/(users|groups|roles)/,'')) + "/"
+  path.sub!("//",'/')
+  instance_eval rb, name, 1
+end
