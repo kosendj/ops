@@ -1,0 +1,23 @@
+hosted_zone "kosendj-bu.in." do
+  rrset "kosendj-bu.in.", "A" do
+    ttl 300
+    resource_records(
+      "192.30.252.154",
+      "192.30.252.153"
+    )
+  end
+
+  rrset "gj.kosendj-bu.in.", "CNAME" do
+    ttl 300
+    resource_records(
+      "gjbu.herokuapp.com"
+    )
+  end
+
+  rrset "tj.kosendj-bu.in.", "CNAME" do
+    ttl 300
+    resource_records(
+      "tumblr-jockey.herokuapp.com"
+    )
+  end
+end

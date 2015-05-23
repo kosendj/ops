@@ -1,0 +1,6 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Dir["#{__dir__}/*.route"].each do |name|
+  instance_eval File.read(name), name, 1
+end

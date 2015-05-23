@@ -13,6 +13,13 @@ cap iam dry-run
 cap iam apply
 ```
 
+### Route 53
+
+```
+cap r53 dry-run
+cap r53 apply
+```
+
 ## People
 
 ### root
