@@ -21,4 +21,11 @@ hosted_zone "kosendj-bu.in." do
       "tumblr-jockey.herokuapp.com"
     )
   end
+
+  rrset "test.kosendj-bu.in.", "TXT" do
+    ttl 300
+    resource_records(
+      '"test"',
+    )
+  end
 end
