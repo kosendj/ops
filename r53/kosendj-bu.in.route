@@ -1,3 +1,4 @@
+# vim: ft=ruby
 hosted_zone "kosendj-bu.in." do
   rrset "kosendj-bu.in.", "A" do
     ttl 300
