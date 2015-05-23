@@ -59,8 +59,8 @@ GEM
     packetfu (1.1.10)
     parallel (1.4.1)
     rake (10.4.2)
-    roadworker (0.5.4)
-      aws-sdk-v1 (>= 1.58.0)
+    roadworker (0.5.5.beta)
+      aws-sdk-v1 (>= 1.62.0)
       net-dns2 (~> 0.8.6)
       systemu
       term-ansicolor
@@ -85,5 +85,5 @@ DEPENDENCIES
   capistrano
   itamae!
   miam (= 0.2.1.beta2)
-  roadworker
+  roadworker (= 0.5.5.beta)
   sshkit!
