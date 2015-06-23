@@ -93,3 +93,6 @@ DEPENDENCIES
   piculet
   roadworker (= 0.5.5.beta)
   sshkit!
+
+BUNDLED WITH
+   1.10.3
