@@ -8,6 +8,35 @@ hosted_zone "kosendj-bu.in." do
     )
   end
 
+  rrset "kosendj-bu.in.", "MX" do
+    ttl 300
+    resource_records(
+      '10 mxa.mailgun.org.',
+      '10 mxb.mailgun.org.',
+    )
+  end
+
+  rrset "kosendj-bu.in.", "TXT" do
+    ttl 300
+    resource_records(
+      '"v=spf1 include:mailgun.org ~all"',
+    )
+  end
+
+  rrset "pic._domainkey.kosendj-bu.in.", "TXT" do
+    ttl 300
+    resource_records(
+      '"k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8ARJdoVud2kgDXSwn4Imq0v/i9qeSLjIcy310PdxxHMthWtSNohLgWeT4RnGnkiBVjLe8p87MJVl3Gh+lvJKS5ea8CWMAeFjfnMT2Y9JynADkqy7lN4LM2dTeyBTAMSX1PDiCJ+e1u4ySZ5RiSQiPc7GBY5GbU8xwD6Bi5pHGfQIDAQAB"',
+    )
+  end
+
+  rrset "email.kosendj-bu.in.", "CNAME" do
+    ttl 300
+    resource_records(
+      "mailgun.org"
+    )
+  end
+
   rrset "gj.kosendj-bu.in.", "CNAME" do
     ttl 300
     resource_records(
