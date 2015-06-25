@@ -1,0 +1,107 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+### kosendj-main
+ec2 "vpc-f43d9b91" do
+  security_group "default" do
+    description "default VPC security group"
+
+    ingress do
+      permission :any do
+        groups(
+          "default"
+        )
+      end
+
+      permission :tcp, 22..22 do
+        ip_ranges(
+          "125.30.60.164/32",
+        )
+      end
+
+      permission :tcp, 22982..22982 do
+        ip_ranges(
+          "0.0.0.0/0",
+        )
+      end
+    end
+
+    egress do
+      permission :any do
+        ip_ranges(
+          "0.0.0.0/0"
+        )
+      end
+    end
+  end
+
+  security_group "http-public" do
+    description "open"
+
+    ingress do
+      permission :tcp, 80..80 do
+        ip_ranges(
+          "0.0.0.0/0",
+        )
+      end
+
+      permission :tcp, 443..443 do
+        ip_ranges(
+          "0.0.0.0/0",
+        )
+      end
+    end
+
+    egress do
+      permission :any do
+        ip_ranges(
+          "0.0.0.0/0"
+        )
+      end
+    end
+  end
+
+  security_group "mysql" do
+    description "open"
+
+    ingress do
+      permission :tcp, 3306..3306 do
+        groups(
+          "default",
+        )
+      end
+    end
+
+    egress do
+      permission :any do
+        ip_ranges(
+          "0.0.0.0/0"
+        )
+      end
+    end
+  end
+end
+
+
+### Default VPC
+ec2 "vpc-df48eeba" do
+  security_group "default" do
+    description "default VPC security group"
+
+    ingress do
+      permission :any do
+        groups(
+          "default"
+        )
+      end
+    end
+
+    egress do
+      permission :any do
+        ip_ranges(
+          "0.0.0.0/0"
+        )
+      end
+    end
+  end
+end
