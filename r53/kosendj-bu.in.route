@@ -44,6 +44,14 @@ hosted_zone "kosendj-bu.in." do
     )
   end
 
+  rrset "gjcase-prod-cdn.kosendj-bu.in.", "A" do
+    dns_name "d29wxpgbo7aeup.cloudfront.net."
+  end
+
+  rrset "gjcase-storage.kosendj-bu.in.", "A" do
+    dns_name "d29wxpgbo7aeup.cloudfront.net."
+  end
+
   rrset "tj.kosendj-bu.in.", "CNAME" do
     ttl 300
     resource_records(
