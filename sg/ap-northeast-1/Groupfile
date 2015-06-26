@@ -80,6 +80,27 @@ ec2 "vpc-f43d9b91" do
       end
     end
   end
+
+  security_group "redis" do
+    description "open"
+
+    ingress do
+      permission :tcp, 6379..6379 do
+        groups(
+          "default",
+        )
+      end
+    end
+
+    egress do
+      permission :any do
+        ip_ranges(
+          "0.0.0.0/0"
+        )
+      end
+    end
+  end
+
 end
 
 
