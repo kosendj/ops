@@ -38,10 +38,6 @@ remote_file '/etc/systemd/system/gjcase.service' do
   notifies :run, 'execute[systemctl daemon-reload]', :immediately
 end
 
-execute 'touch /etc/gjcase.env' do
-  not_if 'test -e /etc/gjcase.env'
-end
-
 execute 'touch /etc/gj.env' do
   not_if 'test -e /etc/gj.env'
 end
