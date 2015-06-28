@@ -26,7 +26,7 @@ end
 
 execute 'git clone https://github.com/kosendj/gjcase /home/dj/app/gjcase' do
   user 'dj'
-  not_if 'test -d  /home/dj/app/gj'
+  not_if 'test -d  /home/dj/app/gjcase'
 end
 
 ###
