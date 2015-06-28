@@ -1,17 +1,16 @@
 GIT
   remote: https://github.com/capistrano/sshkit.git
-  revision: ea211bcbbb71dab0152a18c2774922b7017e4edc
+  revision: c840d4f63f4146023941933684a4b9c8f1a91d1d
   specs:
     sshkit (1.7.1)
-      colorize (>= 0.7.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
 
 GIT
   remote: https://github.com/itamae-kitchen/itamae.git
-  revision: be5f9dcd76c5a21e827279a7ba11a49ae8d2b047
+  revision: dc038d2afab08719f9d48da628b724f12b2c4fdc
   specs:
-    itamae (1.2.17)
+    itamae (1.3.1)
       ansi
       hashie
       schash (~> 0.1.0)
@@ -22,9 +21,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ansi (1.5.0)
-    aws-sdk (1.64.0)
-      aws-sdk-v1 (= 1.64.0)
-    aws-sdk-core (2.0.45)
+    aws-sdk-core (2.0.48)
       builder (~> 3.0)
       jmespath (~> 1.0)
       multi_json (~> 1.0)
@@ -36,12 +33,11 @@ GEM
       i18n
       rake (>= 10.0.0)
       sshkit (~> 1.3)
-    colorize (0.7.7)
-    hashie (3.4.1)
+    hashie (3.4.2)
     i18n (0.7.0)
     jmespath (1.0.2)
       multi_json (~> 1.0)
-    json (1.8.2)
+    json (1.8.3)
     macaddr (1.7.1)
       systemu (~> 2.6.2)
     miam (0.2.1.beta2)
@@ -50,18 +46,19 @@ GEM
       ruby-progressbar
       term-ansicolor
     mini_portile (0.6.2)
-    multi_json (1.11.0)
+    multi_json (1.11.1)
     net-dns2 (0.8.7)
       packetfu
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
+    net-telnet (0.1.1)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     packetfu (1.1.10)
-    parallel (1.4.1)
-    piculet (0.2.7)
-      aws-sdk (>= 1.48.0, < 2.0.0)
+    parallel (1.6.0)
+    piculet (0.2.8)
+      aws-sdk-v1 (>= 1.48.0)
       term-ansicolor (>= 1.2.2)
     rake (10.4.2)
     roadworker (0.5.5.beta)
@@ -72,15 +69,15 @@ GEM
       uuid
     ruby-progressbar (1.7.5)
     schash (0.1.1)
-    specinfra (2.34.1)
+    specinfra (2.36.6)
       net-scp
       net-ssh
     systemu (2.6.5)
-    term-ansicolor (1.3.0)
+    term-ansicolor (1.3.2)
       tins (~> 1.0)
     thor (0.19.1)
-    tins (1.5.1)
-    uuid (2.3.7)
+    tins (1.5.4)
+    uuid (2.3.8)
       macaddr (~> 1.0)
 
 PLATFORMS
@@ -90,6 +87,7 @@ DEPENDENCIES
   capistrano
   itamae!
   miam (= 0.2.1.beta2)
+  net-telnet
   piculet
   roadworker (= 0.5.5.beta)
   sshkit!

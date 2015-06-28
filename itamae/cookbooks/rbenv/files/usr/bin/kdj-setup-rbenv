@@ -1,0 +1,8 @@
+#!/bin/bash -xe
+
+cd /usr/share
+git clone https://github.com/sstephenson/rbenv rbenv
+mkdir /usr/share/rbenv/plugins
+cd /usr/share/rbenv/plugins
+git clone https://github.com/sstephenson/ruby-build
+git clone https://github.com/sorah/rbenv-global-rehash

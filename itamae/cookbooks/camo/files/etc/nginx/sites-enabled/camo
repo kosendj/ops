@@ -1,0 +1,39 @@
+upstream camo {
+  server 127.0.0.1:9090;
+}
+
+server {
+  listen [::]:80;
+  server_name camo.kosendj-bu.in;
+
+  access_log  /var/log/nginx/camo.access.log combined;
+  access_log /var/log/nginx/access.ltsv.log ltsv;
+  error_log  /var/log/nginx/camo.error.log;
+
+  location / {
+    proxy_cache camocache;
+
+    proxy_cache_valid 200 1h;
+    proxy_cache_valid any 1m;
+
+    proxy_hide_header Content-Security-Policy;
+    proxy_hide_header Strict-Transport-Security;
+    proxy_hide_header Cache-Control;
+
+    add_header 'Access-Control-Allow-Origin' '*';
+    add_header 'Access-Control-Allow-Credentials' 'true';
+    add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+    add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+
+    expires 12h;
+
+    proxy_set_header  X-Real-IP        $remote_addr;
+    proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
+    proxy_set_header  Host             $http_host;
+
+    proxy_redirect    off;
+
+    proxy_pass        http://camo;
+  }
+}
+

@@ -1,0 +1,16 @@
+[Unit]
+Description=gjcase unicorn server
+ 
+[Service]
+Type=simple
+SyslogIdentifier=gjcase-unicorn
+User=dj
+PIDFile=/tmp/unicorn-gjcase.pid
+WorkingDirectory=/home/dj/app/gjcase
+ 
+ExecStart=/home/dj/app/gjcase.env.sh bundle exec unicorn -c /home/dj/app/gjcase/config/unicorn.conf
+ExecReload=/bin/kill -s USR2 $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+ 
+[Install]
+WantedBy=multi-user.target

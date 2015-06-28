@@ -1,0 +1,61 @@
+#!/bin/bash
+set -x
+set -e
+
+newver=$1
+newabi=$2
+headof=$3
+
+if [[ ( -z "$1" ) || ( -z "$2" ) ]]; then
+  echo "Usage: $0 newver newabi [headof]"
+fi
+
+export RBENV_ROOT=/usr/share/rbenv
+
+export RUBY_CONFIGURE_OPTS="--enable-shared --enable-pthread --disable-install-doc --disable-install-capi"
+export MAKEOPTS="${MAKEOPTS:--j2}"
+export optflags="-O2"
+
+###
+
+cd $RBENV_ROOT/plugins/ruby-build
+git pull --rebase
+cd $RBENV_ROOT
+
+##
+
+if [ -z $headof ]; then
+  headof=${newver:0:3}
+fi
+
+if [  -d $RBENV_ROOT/versions/$headof ]; then
+  oldabi=$(ls -1 ${RBENV_ROOT}/versions/${headof}/lib/ruby/gems|head -n1)
+
+  mkdir -p versions/$newver/lib/ruby/gems
+  cp -rp versions/$headof/lib/ruby/gems/${oldabi} versions/$newver/lib/ruby/gems/${newabi}
+fi
+
+##
+
+export PATH=/usr/lib/distcc/bin:/usr/local/bin:/usr/bin:/bin:/opt/bin:/usr/x86_64-pc-linux-gnu/gcc-bin/4.6.3
+export PATH=$RBENV_ROOT/shims:$RBENV_ROOT/bin:$PATH
+unset GEM_PATH
+unset BUNDLE_BIN_PATH
+unset BUNDLE_GEMFILE
+unset RUBYOPT
+unset RUBYLIB
+
+rbenv install $newver
+export RBENV_VERSION=$newver
+
+gem i bundler --no-rdoc --no-ri
+gem i foreman --no-rdoc --no-ri
+rbenv global-rehash /usr/local/bin
+
+gem pristine --all
+rbenv global-rehash /usr/local/bin
+##
+
+if [[ ( ! -z $headof ) ]]; then
+  ln -sfT $newver $RBENV_ROOT/versions/$headof
+fi

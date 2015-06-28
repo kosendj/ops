@@ -1,0 +1,14 @@
+[Unit]
+Description=camo
+After=network.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+User=dj
+Group=dj
+ExecStart=node /home/dj/app/camo/server.js
+Environment="PORT=9090"
+EnvironmentFile=/etc/camo.env
+Restart=on-failure
