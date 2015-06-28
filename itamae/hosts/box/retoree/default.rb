@@ -21,4 +21,4 @@ remote_file '/etc/nginx/sites-enabled/storage' do
   mode  '0644'
 end
 
-include_cookbook 'camo'
+include_role 'camo'
