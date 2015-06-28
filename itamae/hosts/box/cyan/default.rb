@@ -17,25 +17,29 @@ end
 
 ###
 
-execute 'git clone https://github.com/kosendj/gj /home/dj/app/gj' do
-  user 'dj'
-  not_if 'test -d  /home/dj/app/gj'
-end
-
-###
-
 execute 'git clone https://github.com/kosendj/gjcase /home/dj/app/gjcase' do
   user 'dj'
   not_if 'test -d  /home/dj/app/gjcase'
 end
 
-###
-#
 remote_file '/etc/systemd/system/gjcase.service' do
   owner 'root'
   group 'root'
   mode  '0644'
   notifies :run, 'execute[systemctl daemon-reload]', :immediately
+end
+
+remote_file '/etc/nginx/sites-enabled/gjcase' do
+  owner 'root'
+  group 'root'
+  mode  '0644'
+end
+
+###
+
+execute 'git clone https://github.com/kosendj/gj /home/dj/app/gj' do
+  user 'dj'
+  not_if 'test -d  /home/dj/app/gj'
 end
 
 execute 'touch /etc/gj.env' do
@@ -55,9 +59,4 @@ remote_file '/etc/nginx/sites-enabled/gj' do
   mode  '0644'
 end
 
-remote_file '/etc/nginx/sites-enabled/gjcase' do
-  owner 'root'
-  group 'root'
-  mode  '0644'
-end
 
