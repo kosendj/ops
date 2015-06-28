@@ -1,3 +1,4 @@
+include_cookbook 'app_directory'
 include_cookbook 'nginx'
 
 execute 'git clone https://github.com/atmos/camo /home/dj/app/camo' do

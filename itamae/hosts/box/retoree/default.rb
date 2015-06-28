@@ -21,10 +21,4 @@ remote_file '/etc/nginx/sites-enabled/storage' do
   mode  '0644'
 end
 
-directory '/home/dj/app' do
-  owner 'dj'
-  group 'dj'
-  mode  '0755'
-end
-
 include_cookbook 'camo'
