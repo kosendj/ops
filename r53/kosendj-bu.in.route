@@ -37,12 +37,12 @@ hosted_zone "kosendj-bu.in." do
     )
   end
 
-  rrset "gj.kosendj-bu.in.", "CNAME" do
-    ttl 300
-    resource_records(
-      "gjbu.herokuapp.com"
-    )
-  end
+  #rrset "gj.kosendj-bu.in.", "CNAME" do
+  #  ttl 300
+  #  resource_records(
+  #    "gjbu.herokuapp.com"
+  #  )
+  #end
 
   rrset "gjcase-prod-cdn.kosendj-bu.in.", "A" do
     dns_name "d29wxpgbo7aeup.cloudfront.net."
