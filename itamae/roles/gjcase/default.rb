@@ -1,4 +1,3 @@
-include_cookbook 'base'
 include_cookbook 'nginx'
 
 include_cookbook 'mysql-client'
@@ -7,25 +6,21 @@ include_cookbook 'mysql-server'
 include_cookbook 'redis-client'
 include_cookbook 'redis-server'
 
-include_role 'gjcase'
+include_cookbook 'app_directory'
 
-execute 'git clone https://github.com/kosendj/gj /home/dj/app/gj' do
+execute 'git clone https://github.com/kosendj/gjcase /home/dj/app/gjcase' do
   user 'dj'
-  not_if 'test -d  /home/dj/app/gj'
+  not_if 'test -d /home/dj/app/gjcase'
 end
 
-execute 'touch /etc/gj.env' do
-  not_if 'test -e /etc/gj.env'
-end
-
-remote_file '/etc/systemd/system/gj.service' do
+remote_file '/etc/systemd/system/gjcase.service' do
   owner 'root'
   group 'root'
   mode  '0644'
   notifies :run, 'execute[systemctl daemon-reload]', :immediately
 end
 
-remote_file '/etc/nginx/sites-enabled/gj' do
+remote_file '/etc/nginx/sites-enabled/gjcase' do
   owner 'root'
   group 'root'
   mode  '0644'
