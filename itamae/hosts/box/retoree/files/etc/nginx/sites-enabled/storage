@@ -1,13 +1,21 @@
+
 server {
   listen [::]:80;
   server_name gjcase-storage.kosendj-bu.in;
-  root /home/dj/gjcase-storage;
 
   access_log  /var/log/nginx/storage.access.log combined;
   access_log /var/log/nginx/access.ltsv.log ltsv;
   error_log  /var/log/nginx/storage.error.log;
 
-  try_files $uri @cf =404;
+  root /home/dj/gjcase-storage;
+  try_files $uri @cf;
+
+  add_header 'Access-Control-Allow-Origin' '*';
+  add_header 'Access-Control-Allow-Credentials' 'true';
+  add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+  add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+
+  expires 12h;
 
   location @cf {
     proxy_cache camocache;
@@ -15,22 +23,15 @@ server {
     proxy_cache_valid 200 1h;
     proxy_cache_valid any 1m;
 
-    proxy_hide_header Content-Security-Policy;
-    proxy_hide_header Strict-Transport-Security;
-    proxy_hide_header Cache-Control;
-
-    add_header 'Access-Control-Allow-Origin' '*';
-    add_header 'Access-Control-Allow-Credentials' 'true';
-    add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
-    add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
-
-    expires 12h;
-
     proxy_set_header  X-Real-IP        $remote_addr;
     proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
     proxy_set_header  Host             $http_host;
 
     proxy_redirect    off;
+
+    proxy_hide_header Content-Security-Policy;
+    proxy_hide_header Strict-Transport-Security;
+    proxy_hide_header Cache-Control;
 
     proxy_pass        http://gjcase-prod-cdn.kosendj-bu.in;
   }
