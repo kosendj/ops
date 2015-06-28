@@ -1,3 +1,5 @@
+include_cookbook 'nginx'
+
 remote_file '/etc/nginx/sites-enabled/storage' do
   owner 'root'
   group 'root'
