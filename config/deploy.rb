@@ -4,6 +4,32 @@
 # set :application, 'my_app_name'
 set :repo_url, 'git@github.com:kosendj/ops.git'
 
+set :sudo_password, -> { ask('Your sudo password:', nil, echo: false) }
+
+module ::Capistrano
+  module DSL
+    def sudo(*args)
+      if args.last.is_a?(Hash)
+       args << args.pop.merge(sudo_handler)
+      else
+        args << sudo_handler
+      end
+      execute :sudo, *args
+    end
+
+    def sudo_handler
+        abort 'Enter sudo password' unless fetch(:sudo_password)
+        {
+          interaction_handler: {
+            /^\[sudo\] password for (.+?):/ => "#{fetch(:sudo_password)}\n",
+          }
+        }
+    end
+  end
+end
+
+
+
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
@@ -46,3 +72,13 @@ set :repo_url, 'git@github.com:kosendj/ops.git'
 #   end
 # 
 # end
+#
+server('cyan.box.ops.kosendj-bu.in',
+  roles: %w(itamae),
+  name: 'cyan',
+)
+
+server('retoree.box.ops.kosendj-bu.in',
+  roles: %w(itamae),
+  name: 'retoree',
+)
