@@ -26,3 +26,7 @@ remote_file '/etc/nginx/sites-enabled/gj' do
   group 'root'
   mode  '0644'
 end
+
+service 'gj' do
+  action %i(enable start)
+end

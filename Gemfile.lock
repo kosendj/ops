@@ -70,9 +70,10 @@ GEM
       uuid
     ruby-progressbar (1.7.5)
     schash (0.1.1)
-    specinfra (2.36.6)
+    specinfra (2.36.11)
       net-scp
       net-ssh
+      net-telnet
     systemu (2.6.5)
     term-ansicolor (1.3.2)
       tins (~> 1.0)

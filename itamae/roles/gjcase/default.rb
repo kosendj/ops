@@ -25,3 +25,7 @@ remote_file '/etc/nginx/sites-enabled/gjcase' do
   group 'root'
   mode  '0644'
 end
+
+service 'gjcase' do
+  action %i(enable start)
+end

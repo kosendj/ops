@@ -26,5 +26,5 @@ execute 'create camo.env' do
 end
 
 service "camo" do
-  action :start
+  action %i(start enable)
 end
