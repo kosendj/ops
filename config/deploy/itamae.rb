@@ -29,7 +29,7 @@ end
     opts = seq ? {in: :sequence} : {}
     on roles(:itamae), opts do
       root_dir = host.properties.itamae_ssh ? '.' : deploy_to
-      recipe_path = File.join(root_dir, "itamae/hosts/box/#{host.properties.name}/default.rb")
+      recipe_path = File.join(root_dir, "itamae/hosts/#{host.properties.zone}/#{host.properties.name}/default.rb")
 
       itamae_args = []
       itamae_args << "--dry-run" if task_name == :"dry-run"
@@ -80,7 +80,7 @@ task :install_itamae_package do
   on roles(:itamae), in: :sequence do |srv|
     next if srv.properties.itamae_ssh
 
-    itamae_cmd = "itamae ssh --host #{srv} --user #{fetch(:remote_user)} itamae/site.rb itamae/hosts/box/base/prepare.rb"
+    itamae_cmd = "itamae ssh --host #{srv} --user #{fetch(:remote_user)} itamae/site.rb itamae/hosts/#{srv.properties.zone}/base/prepare.rb"
     puts "$ #{itamae_cmd}"
     unless system(itamae_cmd)
       raise 'itamae prepare failed'

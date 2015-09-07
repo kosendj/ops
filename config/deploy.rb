@@ -76,10 +76,12 @@ end
 server('cyan.box.ops.kosendj-bu.in',
   roles: %w(itamae),
   name: 'cyan',
+  zone: 'box',
 )
 
 server('retoree.box.ops.kosendj-bu.in',
   roles: %w(itamae),
   name: 'retoree',
+  zone: 'box',
   itamae_ssh: true,
 )
