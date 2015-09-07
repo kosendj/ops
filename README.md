@@ -20,6 +20,17 @@ cap r53 dry-run
 cap r53 apply
 ```
 
+## Bootstrapping physical servers
+
+enable sshd then:
+
+```
+$ scp bootstrap/${target_hostname}.sh dj@${target}:bootstrap.sh
+$ ssh dj@${target}
+remote $ sudo bash bootstrap.sh
+
+```
+
 ## People
 
 ### root
