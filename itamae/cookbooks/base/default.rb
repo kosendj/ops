@@ -10,3 +10,5 @@ end
 include_cookbook 'build-essential'
 include_cookbook 'rbenv'
 include_cookbook 'nodejs'
+
+include_recipe './systemd_logind.rb'
