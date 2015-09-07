@@ -1,5 +1,8 @@
 require 'pathname'
 
+node[:_platform] = node[:platform]
+node[:platform] = nil
+
 begin
   require 'itamae/secrets'
   node[:secrets] = Itamae::Secrets(File.join(__dir__, 'secrets'))
