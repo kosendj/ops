@@ -47,6 +47,10 @@ execute "systemctl daemon-reload" do
   action :nothing
 end
 
+execute "sysctl --system" do
+  action :nothing
+end
+
 define :apt_key, keyname: nil do
   name = params[:keyname] || params[:name]
   execute "apt-key #{name}" do
