@@ -31,6 +31,12 @@ remote $ sudo bash bootstrap.sh
 
 ```
 
+## Infrataster
+
+```
+$ bundle exec rspec --color -fd -I infrataster infrataster
+```
+
 ## People
 
 ### root
