@@ -20,9 +20,11 @@ remote_file '/etc/systemd/system/camo.service' do
   notifies :run, 'execute[systemctl daemon-reload]', :immediately
 end
 
-execute 'create camo.env' do
-  command "echo 'CAMO_KEY=deadbeef' > /etc/camo.env"
-  not_if 'test -e /etc/camo.env'
+file '/etc/camo.env' do
+  content "CAMO_KEY=#{node[:secrets][:camo_key]}\n"
+  owner 'root'
+  group 'dj'
+  mode '0640'
 end
 
 service "camo" do
