@@ -1,4 +1,12 @@
 require 'pathname'
+
+begin
+  require 'itamae/secrets'
+  node[:secrets] = Itamae::Secrets(File.join(__dir__, 'secrets'))
+rescue LoadError
+  warn 'WARN: no itamae-secrets'
+end
+
 module RecipeHelper
   def include_role(name)
     Pathname.new(File.dirname(@recipe.path)).ascend do |dir|
