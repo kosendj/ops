@@ -42,6 +42,14 @@ template "/etc/nginx/nginx.conf" do
   owner 'root'
   group 'root'
   mode  '0644'
+  notifies :reload, 'service[nginx]'
+end
+
+template '/etc/nginx/sites-enabled/default' do
+  owner 'root'
+  group 'root'
+  mode  '0644'
+  notifies :reload, 'service[nginx]'
 end
 
 service "nginx" do
