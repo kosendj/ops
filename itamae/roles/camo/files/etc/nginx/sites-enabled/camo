@@ -2,6 +2,9 @@ upstream camo {
   server 127.0.0.1:9090 fail_timeout=0;
 }
 
+proxy_cache_path /var/lib/nginx-cache levels=2 keys_zone=camocache:10m;
+proxy_temp_path /tmp/nginx-tmp 1 2;
+
 server {
   listen [::]:80;
   server_name camo.kosendj-bu.in;
