@@ -7,6 +7,7 @@ set :remote_user, -> { ENV['REMOTE_USER'] || 'dj' }
 task :rsync do
  local_itamae_path = File.join(__dir__, '..', '..', 'itamae')
   on roles(:itamae) do |srv|
+    next if srv.properties.itamae_ssh
     run_locally do
       user = ENV['REMOTE_USER'] || (srv.ssh_options && srv.ssh_options[:user]) || 'dj'
       user_opt = user ? "#{user}@" : ""
@@ -17,26 +18,45 @@ end
 
 %i!apply-immediately dry-run!.each do |task_name|
   task task_name => [:rsync, :update_itamae_package] do
-    on roles(:itamae) do
-      recipe_path = File.join(deploy_to, "itamae/hosts/box/#{host.properties.name}/default.rb")
+    seq = false
+    on roles(:itamae), in: :sequence do
+      if host.properties.itamae_ssh
+        seq = true
+        puts "Running in sequence (itamae_ssh hosts are included)"
+      end
+    end
 
-      args = ["/opt/itamae/embedded/bin/itamae", "local"]
-      args << "--dry-run" if task_name == :"dry-run"
-      args << "--log-level" << ENV['ITAMAE_LOG'] if ENV['ITAMAE_LOG']
-      # args << "-j #{File.join(deploy_to, fetch(:variables_json_path))}"
-      args << File.join(deploy_to, "itamae/site.rb")
-      args << recipe_path
+    opts = seq ? {in: :sequence} : {}
+    on roles(:itamae), opts do
+      root_dir = host.properties.itamae_ssh ? '.' : deploy_to
+      recipe_path = File.join(root_dir, "itamae/hosts/box/#{host.properties.name}/default.rb")
 
-      with term: 'xterm' do
-        sudo *args
+      itamae_args = []
+      itamae_args << "--dry-run" if task_name == :"dry-run"
+      itamae_args << "--log-level" << ENV['ITAMAE_LOG'] if ENV['ITAMAE_LOG']
+      # itamae_args << "-j #{File.join(deploy_to, fetch(:variables_json_path))}"
+      itamae_args << File.join(root_dir, "itamae/site.rb")
+      itamae_args << recipe_path
+
+      if host.properties.itamae_ssh
+        itamae_cmd = [*%w(itamae ssh), "--host", host.to_s, "--user", fetch(:remote_user), *itamae_args]
+        puts "$ #{itamae_cmd.join(' ')}"
+        unless system(*itamae_cmd)
+          raise 'itamae failed'
+        end
+      else
+        with term: 'xterm' do
+          sudo "/opt/itamae/embedded/bin/itamae", "local", *args
+        end
       end
 
-      current_revision = ''
-      run_locally do
-        current_revision = capture('git rev-parse HEAD')
+      if task_name != :'dry-run'
+        current_revision = ''
+        run_locally do
+          current_revision = capture('git rev-parse HEAD')
+        end
+        sudo :sh, "-c 'mkdir -p /var/lib/itamae; echo #{current_revision} > /var/lib/itamae/last_revision'"
       end
-      sudo :sh, "-c 'mkdir -p /var/lib/itamae; echo #{current_revision} > /var/lib/itamae/last_revision'"
-
     end
   end
 end
@@ -58,7 +78,9 @@ end
 
 task :install_itamae_package do
   on roles(:itamae), in: :sequence do |srv|
-    itamae_cmd = "itamae ssh --host #{srv} --user #{fetch(:remote_user)} itamae/site.rb itamae/cookbooks/itamae/default.rb"
+    next if srv.properties.itamae_ssh
+
+    itamae_cmd = "itamae ssh --host #{srv} --user #{fetch(:remote_user)} itamae/site.rb itamae/hosts/box/base/prepare.rb"
     puts "$ #{itamae_cmd}"
     unless system(itamae_cmd)
       raise 'itamae prepare failed'
@@ -68,6 +90,7 @@ end
 
 task :update_itamae_package do
   on roles(:itamae) do |srv|
+    next if srv.properties.itamae_ssh
     cmd = <<-EOC
 /bin/bash -c 'dpkg-query -s itamae | grep -E "^Version: #{Regexp.escape(fetch(:itamae_version))}$" || apt-get update && env DEBIAN_FRONTEND='noninteractive' apt-get -y install itamae=#{fetch(:itamae_version)}'
     EOC

@@ -81,4 +81,5 @@ server('cyan.box.ops.kosendj-bu.in',
 server('retoree.box.ops.kosendj-bu.in',
   roles: %w(itamae),
   name: 'retoree',
+  itamae_ssh: true,
 )
