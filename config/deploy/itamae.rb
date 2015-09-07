@@ -3,6 +3,7 @@ require 'yaml'
 
 set :deploy_to, "/tmp/itamae-cache.#{ENV['REMOTE_USER'] || ENV['USER']}"
 set :remote_user, -> { ENV['REMOTE_USER'] || 'dj' }
+set :itamae_version, '1.4.3+20150728074102-1'
 
 task :rsync do
  local_itamae_path = File.join(__dir__, '..', '..', 'itamae')
