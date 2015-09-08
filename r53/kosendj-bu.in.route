@@ -66,14 +66,14 @@ hosted_zone "kosendj-bu.in." do
     )
   end
 
-  rrset "rosia.pub.ops.kosendj-bu.in", "A" do
+  rrset "rosia.pub-ops.kosendj-bu.in", "A" do
     ttl 60
     resource_records(
       "133.130.52.23",
     )
   end
 
-  rrset "rosia.pub.ops.kosendj-bu.in", "AAAA" do
+  rrset "rosia.pub-ops.kosendj-bu.in", "AAAA" do
     ttl 60
     resource_records(
       "2400:8500:1301:729:133:130:52:23",
