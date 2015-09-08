@@ -1,6 +1,6 @@
 node[:platform] = :onpremise
 
-include_cookbook 'base'
+include_recipe '../base/default.rb'
 include_cookbook 'nginx'
 
 include_role 'box-router'
