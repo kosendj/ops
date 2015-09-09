@@ -16,6 +16,7 @@ task :rsync do
       user_opt = user ? "#{user}@" : ""
       execute "rsync -az --copy-links --copy-unsafe-links --delete --exclude='*.sw?' #{local_itamae_path} #{user_opt}#{srv}:#{deploy_to}"
     end
+    execute "chmod 600 #{deploy_to}/itamae/secrets/keys/*"
   end
 end
 
