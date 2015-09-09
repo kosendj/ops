@@ -85,3 +85,9 @@ server('retoree.box.ops.kosendj-bu.in',
   zone: 'box',
   itamae_ssh: true,
 )
+
+server('rosia.cnh.ops.kosendj-bu.in',
+  roles: %w(itamae),
+  name: 'rosia',
+  zone: 'cnh',
+)
