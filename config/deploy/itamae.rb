@@ -50,7 +50,7 @@ end
         end
       else
         with term: 'xterm' do
-          sudo "/opt/itamae/embedded/bin/itamae", "local", *args
+          sudo "/opt/itamae/embedded/bin/itamae", "local", *itamae_args
         end
       end
 
