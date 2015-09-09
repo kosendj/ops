@@ -1,0 +1,16 @@
+[Unit]
+Description=nginx_omniauth_adapter unicorn server
+ 
+[Service]
+Type=simple
+SyslogIdentifier=nginx_omniauth_adapter-unicorn
+User=dj
+PIDFile=/tmp/unicorn-nginx_omniauth_adapter.pid
+WorkingDirectory=/home/dj/app/nginx_omniauth_adapter/current
+ 
+ExecStart=/home/dj/app/nginx_omniauth_adapter/shared/env.sh bundle exec unicorn -c /home/dj/app/nginx_omniauth_adapter/shared/unicorn.conf
+ExecReload=/bin/kill -s USR2 $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+ 
+[Install]
+WantedBy=multi-user.target

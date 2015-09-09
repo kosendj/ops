@@ -22,3 +22,5 @@ end
 
 include_role 'mysql-server'
 include_role 'redis-server'
+
+include_role 'nginx-omniauth-adapter'

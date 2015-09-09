@@ -1,0 +1,26 @@
+upstream nginx_omniauth_adapter {
+  server unix:///tmp/unicorn-nginx_omniauth_adapter.sock;
+}
+
+server {
+  listen [::]:80;
+  server_name <%= node[:nginx_omniauth_adapter][:host] %>;
+
+  access_log  /var/log/nginx/auth.access.log combined;
+  access_log /var/log/nginx/access.ltsv.log ltsv;
+  error_log  /var/log/nginx/auth.error.log;
+
+  root /home/dj/app/nginx_omniauth_adapter/current/public;
+  try_files $uri @app;
+
+  location @app {
+    proxy_set_header  X-Real-IP        $remote_addr;
+    proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
+    proxy_set_header  Host             $http_host;
+
+    proxy_redirect    off;
+
+    proxy_pass        http://nginx_omniauth_adapter;
+  }
+}
+

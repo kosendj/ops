@@ -59,6 +59,13 @@ hosted_zone "kosendj-bu.in." do
     )
   end
 
+  rrset "auth.kosendj-bu.in.", "CNAME" do
+    ttl 300
+    resource_records(
+      "rosia.pub-ops.kosendj-bu.in."
+    )
+  end
+
   rrset "test.kosendj-bu.in.", "TXT" do
     ttl 300
     resource_records(
