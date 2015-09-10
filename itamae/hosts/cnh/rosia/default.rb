@@ -30,3 +30,4 @@ include_role 'redis-server'
 
 include_role 'nginx-omniauth-adapter'
 include_role 'gjcase'
+include_role 'camo'
