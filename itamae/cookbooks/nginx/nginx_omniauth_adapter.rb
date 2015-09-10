@@ -1,7 +1,7 @@
 node.reverse_merge!(
   nginx_omniauth_adapter: {
     host: 'auth.kosendj-bu.in',
-    server: '172.19.0.1',
+    server: '172.20.0.1',
   },
 )
 

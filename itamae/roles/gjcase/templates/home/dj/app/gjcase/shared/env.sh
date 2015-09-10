@@ -10,8 +10,8 @@ export RAILS_ENV=production
 
 export SECRET_KEY_BASE="<%= node[:secrets][:'gjcase-secret_key_base'] %>"
 
-export DATABASE_URL="mysql2://gjcase:<%= node[:secrets][:'db-gjcase-password'] %>@172.19.0.1:3306/gjcase?encoding=utf8mb4&read_timeout=5&pool=5"
-export REDIS_URL="redis://172.19.0.1:6379"
+export DATABASE_URL="mysql2://gjcase:<%= node[:secrets][:'db-gjcase-password'] %>@172.20.0.1:3306/gjcase?encoding=utf8mb4&read_timeout=5&pool=5"
+export REDIS_URL="redis://172.20.0.1:6379"
 
 export GJCASE_CAMO_URL=http://camo.kosendj-bu.in
 export GJCASE_CAMO_KEY="<%= node[:secrets][:camo_key] %>"
