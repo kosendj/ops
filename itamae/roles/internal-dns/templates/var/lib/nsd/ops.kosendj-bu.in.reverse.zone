@@ -1,0 +1,22 @@
+$TTL 60
+$ORIGIN 172.in-addr.arpa.
+
+@               IN      SOA     rosia.ops.kosendj-bu.in. root.kosendj-bu.in. (
+                                2015090601  ; Serial
+                                3600            ; Refresh
+                                1800            ; Retry
+                                2419200         ; Expire
+                                60)             ; Negative Cache TTL
+
+                       NS rosia.ops.kosendj-bu.in.
+
+1.0.20 IN PTR rosia.cnh.ops.kosendj-bu.in.
+
+1.224.19 IN PTR retoree.box.ops.kosendj-bu.in.
+1.128.19 IN PTR retoree-srv.box.ops.kosendj-bu.in.
+1.0.19 IN PTR retoree-cl.box.ops.kosendj-bu.in.
+
+10.128.19 IN PTR cyan.box.ops.kosendj-bu.in.
+
+2.224.19 IN PTR moa.box.ops.kosendj-bu.in.
+3.224.19 IN PTR chuchu.box.ops.kosendj-bu.in.
