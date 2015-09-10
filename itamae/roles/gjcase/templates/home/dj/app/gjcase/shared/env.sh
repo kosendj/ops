@@ -3,6 +3,9 @@
 export GJCASE_ENVSH="$0"
 export GJCASE_ENVVER=a
 
+export AWS_ACCESS_KEY_ID="<%= node[:gjcase][:aws_access_key_id] %>"
+export AWS_SECRET_ACCESS_KEY="<%= node[:gjcase][:aws_secret_access_key] %>"
+
 export RAILS_ENV=production
 
 export SECRET_KEY_BASE="<%= node[:secrets][:'gjcase-secret_key_base'] %>"
