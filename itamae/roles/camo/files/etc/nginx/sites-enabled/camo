@@ -24,9 +24,8 @@ server {
     proxy_hide_header Cache-Control;
 
     add_header 'Access-Control-Allow-Origin' '*';
-    add_header 'Access-Control-Allow-Credentials' 'true';
-    add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
-    add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type';
+    add_header 'Access-Control-Allow-Methods' 'GET';
+    add_header 'Access-Control-Max-Age' '86400';
 
     expires 12h;
 
