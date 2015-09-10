@@ -43,6 +43,13 @@ hosted_zone "kosendj-bu.in." do
   #    "gjbu.herokuapp.com"
   #  )
   #end
+  #
+  rrset "gj.kosendj-bu.in.", "CNAME" do
+    ttl 300
+    resource_records(
+      "rosia.pub-ops.kosendj-bu.in."
+    )
+  end
 
   rrset "gjcase.kosendj-bu.in.", "CNAME" do
     ttl 300
