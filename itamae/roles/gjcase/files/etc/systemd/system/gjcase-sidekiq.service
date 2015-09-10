@@ -1,0 +1,14 @@
+[Unit]
+Description=gjcase sidekiq
+ 
+[Service]
+Type=simple
+SyslogIdentifier=gjcase-sidekiq
+User=dj
+PIDFile=/tmp/unicorn-gjcase.pid
+WorkingDirectory=/home/dj/app/gjcase/current
+ExecStart=/home/dj/app/gjcase/shared/env.sh bundle exec sidekiq -c 3 -t 10
+TimeoutStopSec=18
+ 
+[Install]
+WantedBy=multi-user.target

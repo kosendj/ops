@@ -76,6 +76,15 @@ end
 
 ###
 
+remote_file '/etc/systemd/system/gjcase-sidekiq.service' do
+  owner 'root'
+  group 'root'
+  mode  '0644'
+  notifies :run, 'execute[systemctl daemon-reload]', :immediately
+end
+
+###
+
 service 'gjcase' do
   action %i(enable start)
 end
