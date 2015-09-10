@@ -10,8 +10,21 @@ server {
   access_log /var/log/nginx/access.ltsv.log ltsv;
   error_log  /var/log/nginx/gjcase.error.log;
 
-  root /home/dj/app/gjcase/public;
+  root /home/dj/app/gjcase/current/public;
   try_files $uri @app;
+
+<%- if node[:gjcase][:private_mode] -%>
+  include /etc/nginx/utils/ngx_omniauth_enable_server.conf;
+  location / {
+    include /etc/nginx/utils/ngx_omniauth_enable_location.conf;
+    try_files $uri @app;
+  }
+<%- end -%>
+
+  location /site/sha {
+    auth_request off;
+    try_files $uri @app;
+  }
 
   location @app {
     proxy_set_header  X-Real-IP        $remote_addr;

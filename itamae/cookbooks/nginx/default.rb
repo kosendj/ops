@@ -38,6 +38,12 @@ package 'nginx' do
   action :install
 end
 
+directory "/etc/nginx/utils" do
+  owner 'root'
+  group 'root'
+  mode  '0755'
+end
+
 template "/etc/nginx/nginx.conf" do
   owner 'root'
   group 'root'

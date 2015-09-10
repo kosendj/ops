@@ -6,9 +6,9 @@ Type=simple
 SyslogIdentifier=gjcase-unicorn
 User=dj
 PIDFile=/tmp/unicorn-gjcase.pid
-WorkingDirectory=/home/dj/app/gjcase
+WorkingDirectory=/home/dj/app/gjcase/current
  
-ExecStart=/home/dj/app/gjcase.env.sh bundle exec unicorn -c /home/dj/app/gjcase/config/unicorn.conf
+ExecStart=/home/dj/app/gjcase/shared/env.sh bundle exec unicorn -c /home/dj/app/gjcase/current/config/unicorn.conf
 ExecReload=/bin/kill -s USR2 $MAINPID
 ExecStop=/bin/kill -s QUIT $MAINPID
  
