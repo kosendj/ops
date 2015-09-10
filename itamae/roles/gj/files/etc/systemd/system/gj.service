@@ -9,7 +9,6 @@ WantedBy=multi-user.target
 User=dj
 Group=dj
 ExecStart=/home/dj/app/gj/current/node_modules/coffee-script/bin/coffee index.coffee
-Environment="PORT=3001" "REDIS_URL=redis://localhost:6379"
 EnvironmentFile=/etc/gj.env
 WorkingDirectory=/home/dj/app/gj/current
 Restart=on-failure
