@@ -13,3 +13,11 @@ Infrataster::Server.define(
 #   from: :retoree,
 #   ssh: Net::SSH::Config.for('cyan.box.ops.kosendj-bu.in'),
 # )
+#
+
+Infrataster::Server.define(
+  :rosia,
+  '172.20.0.0/21',
+  from: :rosia,
+  ssh: Net::SSH::Config.for('rosia.cnh.ops.kosendj-bu.in'),
+)
