@@ -5,7 +5,20 @@
 -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 -A INPUT -i lo -j ACCEPT
 -A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT
--A INPUT -p tcp -m tcp --dport 3722 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 3722 -m comment --comment ssh -j ACCEPT
 -A INPUT -p tcp -m tcp --dport 22 -j ACCEPT
 -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 3790 -m comment --comment openvpn-tcp -j ACCEPT
+-A INPUT -p udp -m udp --dport 3790 -m comment --comment openvpn-udp -j ACCEPT
+-A INPUT -s 172.16.0.0/12 -p tcp -m tcp --dport 53 -m comment --comment intra-inbound-tcp -j ACCEPT
+-A INPUT -s 172.16.0.0/12 -p udp -m udp --dport 53 -m comment --comment intra-inbound-udp -j ACCEPT
+-A INPUT -s 172.16.0.0/12 -p tcp -m tcp --dport 10053 -m comment --comment intra-nsd-tcp -j ACCEPT
+-A INPUT -s 172.16.0.0/12 -p udp -m udp --dport 10053 -m comment --comment intra-nsd-udp -j ACCEPT
+-A INPUT -s 172.16.0.0/12 -p tcp -m tcp --dport 3306 -m comment --comment intra-mysql -j ACCEPT
+-A INPUT -s 172.16.0.0/12 -p tcp -m tcp --dport 6379 -m comment --comment intra-redis -j ACCEPT
+-A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A FORWARD -i tun+ -s 172.18.0.0/16 ! -d 172.18.0.0/16 -j ACCEPT
+-A FORWARD -i tun+ -s 172.19.0.0/16 ! -d 172.19.0.0/16 -j ACCEPT
+-A FORWARD -i eth1 -s 172.20.0.0/21 ! -d 172.20.0.0/21 -j ACCEPT
+-A FORWARD -i tun+ -s 172.20.248.0/21 -j ACCEPT
 COMMIT
