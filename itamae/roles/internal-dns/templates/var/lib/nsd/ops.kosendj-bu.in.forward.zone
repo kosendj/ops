@@ -3,7 +3,7 @@ $TTL    60
 $ORIGIN ops.kosendj-bu.in.
 
 @               IN      SOA     rosia.ops.kosendj-bu.in. root.kosendj-bu.in. (
-                                2015090601  ; Serial
+                                2015091201  ; Serial
                                 3600            ; Refresh
                                 1800            ; Retry
                                 2419200         ; Expire
@@ -19,4 +19,5 @@ retoree-cl.box IN A 172.19.0.1
 cyan.box IN A 172.19.128.10
 
 moa.box IN A 172.19.224.2
-chuchu.box IN A 172.19.224.3
+
+chuchu.box IN A 172.19.0.2

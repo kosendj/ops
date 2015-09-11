@@ -2,7 +2,7 @@ $TTL 60
 $ORIGIN 172.in-addr.arpa.
 
 @               IN      SOA     rosia.ops.kosendj-bu.in. root.kosendj-bu.in. (
-                                2015090601  ; Serial
+                                2015091201  ; Serial
                                 3600            ; Refresh
                                 1800            ; Retry
                                 2419200         ; Expire
@@ -19,4 +19,5 @@ $ORIGIN 172.in-addr.arpa.
 10.128.19 IN PTR cyan.box.ops.kosendj-bu.in.
 
 2.224.19 IN PTR moa.box.ops.kosendj-bu.in.
-3.224.19 IN PTR chuchu.box.ops.kosendj-bu.in.
+
+2.0.19 IN PTR chuchu.box.ops.kosendj-bu.in.
