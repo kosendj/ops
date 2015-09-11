@@ -37,6 +37,12 @@ remote $ sudo bash bootstrap.sh
 $ bundle exec rspec --color -fd -I infrataster infrataster
 ```
 
+## Misc
+
+### easy-rsa for OpenVPN
+
+Root CA is managed outside of git. Ask @sorah for details
+
 ## People
 
 ### root
