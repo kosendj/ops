@@ -1,0 +1,61 @@
+#!/bin/bash
+
+set -e
+
+if [ $# -lt 1 ]; then
+  echo "usage: $0 target" 1>&2
+  exit 50
+fi
+
+current_mysql_master="$(aws s3 cp s3://kosendj-config/gj-mysql-master -)"
+current_redis_master="$(aws s3 cp s3://kosendj-config/gj-redis-master -)"
+
+target_master="$1"
+
+echo "Current MySQL master: ${current_mysql_master}"
+echo "Current Redis master: ${current_mysql_master}"
+echo "Target: ${target_master}"
+
+
+if [ "_${current_mysql_master}" = "_${target_master}" -a "_${current_redis_master}" = "_${target_master}" ]; then
+  echo "nothing to do"
+  exit
+fi
+
+
+echo 'stop gjcase sidekiq'
+
+for host in rosia.cnh.ops.kosendj-bu.in cyan.box.ops.kosendj-bu.in; do
+  echo "- ${host}"
+  ssh -t "${host}" 'sudo systemctl stop gjcase-sidekiq' || :
+done
+
+if [ "_${current_mysql_master}" != "_${target_master}" ]; then
+  echo '=========='
+  echo "mysql ${current_mysql_master} -> ${target_master}"
+  $(dirname $0)/djbu-gj-switch-master-mysql "${current_mysql_master}" "${target_master}"
+  echo "${target_master}" | aws s3 cp - s3://kosendj-config/gj-mysql-master
+fi
+
+
+if [ "_${current_redis_master}" != "_${target_master}" ]; then
+  echo '=========='
+  echo "redis ${current_redis_master} -> ${target_master}"
+  $(dirname $0)/djbu-gj-switch-redis "${current_redis_master}" "${target_master}"
+  echo "${target_master}" | aws s3 cp - s3://kosendj-config/gj-redis-master
+fi
+
+echo '=========='
+
+echo 'restart services'
+
+
+for host in rosia.cnh.ops.kosendj-bu.in; do
+  echo "- ${host}"
+  ssh -t "${host}" 'djbu-pull-config; sudo systemctl start gjcase-sidekiq; sudo systemctl reload gjcase; sudo systemctl restart gj' || :
+done
+
+for host in cyan.box.ops.kosendj-bu.in; do
+  echo "- ${host}"
+  ssh -t "${host}" 'djbu-pull-config; sudo systemctl reload gjcase; sudo systemctl restart gj' || :
+done
