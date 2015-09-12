@@ -3,6 +3,8 @@ if node[:gjcase][:private_mode]
   include_cookbook 'nginx::nginx_omniauth_adapter'
 end
 
+include_cookbook 'configurator'
+
 include_cookbook 'mysql-client'
 include_cookbook 'redis-client'
 

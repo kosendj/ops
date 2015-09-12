@@ -8,7 +8,6 @@ WantedBy=multi-user.target
 [Service]
 User=dj
 Group=dj
-ExecStart=/home/dj/app/gj/current/node_modules/coffee-script/bin/coffee index.coffee
-EnvironmentFile=/etc/gj.env
+ExecStart=/home/dj/app/gj/shared/env.sh /home/dj/app/gj/current/node_modules/coffee-script/bin/coffee index.coffee
 WorkingDirectory=/home/dj/app/gj/current
 Restart=on-failure

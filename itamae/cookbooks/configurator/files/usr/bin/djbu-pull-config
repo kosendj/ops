@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ "_$(whoami)" != "_dj" ]; then
+  echo 'Running as user "dj"...'
+  exec sudo -u dj -H "$0" "$@"
+fi
+
+if [ -e ~/.aws/credentials ]; then
+  if grep -q 'configurator' ~/.aws/credentials; then
+    echo 'Using awscli profile configurator'
+    export AWS_DEFAULT_PROFILE="configurator"
+  fi
+fi
+
+set -x
+set -e
+
+export AWS_DEFAULT_REGION=ap-northeast-1
+
+umask 0077
+
+aws s3 sync --delete s3://kosendj-config /home/dj/djbu-config

@@ -31,10 +31,10 @@ end
 
 ###
 
-template '/etc/gj.env' do
+template '/home/dj/app/gj/shared/env.sh' do
   owner 'root'
   group 'dj'
-  mode  '0640'
+  mode  '0750'
 end
 
 remote_file '/etc/systemd/system/gj.service' do
