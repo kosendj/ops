@@ -1,0 +1,103 @@
+#!/bin/bash
+
+if [ $# -lt 2 ]; then
+  echo "Usage: $0 from_ssh_host to_ssh_host" 1>&2
+  exit 50
+fi
+
+ssh_mysql() {
+  if [ "_$1" = "_${to_ssh_host}" ]; then
+    role=slave
+  else
+    role=master
+  fi
+  echo "${role}: $2"
+
+  ssh $1 "read MYSQL_PWD; export MYSQL_PWD; $2" <<< "${root_password}"
+}
+
+set -e
+
+from_ssh_host="$1"
+to_ssh_host="$2"
+
+echo "Init replication on ${to_ssh_host}, where ${from_ssh_host} as master."
+echo "ALL MYSQL DATA ON ${to_ssh_host} WILL BE LOST"
+echo
+
+root_password="$(ruby -rio/console -e 'tty = IO.console; tty.print "mysql root password: "; puts tty.noecho { tty.gets.chomp }; tty.puts')"
+repl_password="$(ruby -rio/console -e 'tty = IO.console; tty.print "mysql repl password: "; puts tty.noecho { tty.gets.chomp }; tty.puts')"
+
+echo "[Step 0/X] Determining root password on mysql"
+
+if ! ssh_mysql "${from_ssh_host}" "mysql -uroot -e 'SELECT VERSION()'" >/dev/null; then
+  echo "! Invalid root pasword on master ${from_ssh_host}" 1>&2
+  exit 1
+fi
+
+if ssh "${to_ssh_host}" "mysql -uroot -e 'SELECT VERSION()'" 2>/dev/null >/dev/null; then
+  echo "* root password not set on new slave ${to_ssh_host}"
+  no_password_on_slave=1
+fi
+
+
+echo "[Step 1/X] mysqldump on master"
+
+ssh "${from_ssh_host}" "rm -f /tmp/dump.sql && touch /tmp/dump.sql && chmod 600 /tmp/dump.sql"
+ssh_mysql "${from_ssh_host}" "mysqldump --all-databases --single-transaction --events --triggers --routines -uroot > /tmp/dump.sql"
+
+echo "(transferring to slave)"
+ssh "${from_ssh_host}" "cat /tmp/dump.sql" | ssh "${to_ssh_host}" "rm -f /tmp/dump.sql && touch /tmp/dump.sql && cat > /tmp/dump.sql"
+
+echo "[Step 2/X] stop and reset state on new slave"
+
+if [ "_${no_password_on_slave}" = "_1" ]; then
+  echo "slave: mysql -uroot -e 'STOP SLAVE;'"
+  ssh "${to_ssh_host}" "mysql -uroot -e 'STOP SLAVE;'"
+  echo "slave: mysql -uroot -e 'RESET SLAVE;'"
+  ssh "${to_ssh_host}" "mysql -uroot -e 'RESET SLAVE;'"
+  echo "slave: mysql -uroot -e 'RESET MASTER;'"
+  ssh "${to_ssh_host}" "mysql -uroot -e 'RESET MASTER;'"
+else
+  ssh_mysql "${to_ssh_host}" "mysql -uroot -e 'STOP SLAVE;'"
+  ssh_mysql "${to_ssh_host}" "mysql -uroot -e 'RESET SLAVE;'"
+  ssh_mysql "${to_ssh_host}" "mysql -uroot -e 'RESET MASTER;'"
+fi
+
+echo "[Step 3/X] import dump on new slave"
+
+if [ "_${no_password_on_slave}" = "_1" ]; then
+  echo "slave: mysql -uroot < /tmp/dump.sql"
+  ssh "${to_ssh_host}" "mysql -uroot < /tmp/dump.sql"
+else
+  ssh_mysql "${to_ssh_host}" "mysql -uroot < /tmp/dump.sql"
+fi
+
+if ! ssh_mysql "${to_ssh_host}" "mysql -uroot -e 'SELECT VERSION();'" >/dev/null 2>/dev/null; then
+  echo "slave: mysql -uroot -e 'FLUSH PRIVILEGES;'"
+  ssh "${to_ssh_host}" "mysql -uroot -e 'FLUSH PRIVILEGES;'"
+
+  if ! ssh_mysql "${to_ssh_host}" "mysql -uroot -e 'SELECT VERSION();'" >/dev/null; then
+    echo "! slave can't be logged in with root password after importing dump"
+    exit 1
+  fi
+fi
+
+
+echo "[Step 4/X] Set read only on new slave"
+
+ssh_mysql "${to_ssh_host}" "mysql -uroot -e 'SET GLOBAL READ_ONLY = 1;'"
+
+echo "[Step 5/X] start slave"
+
+ssh_mysql "${to_ssh_host}" "mysql -uroot -e 'CHANGE MASTER TO MASTER_HOST = \"${from_ssh_host}\", MASTER_PORT = 3306, MASTER_USER = \"repl\", MASTER_PASSWORD = \"${repl_password}\", MASTER_AUTO_POSITION = 1;'"
+ssh_mysql "${to_ssh_host}" "mysql -uroot -e 'START SLAVE;'"
+
+echo "[Step 6/X] clean up"
+
+ssh "${from_ssh_host}" "rm -f /tmp/dump.sql"
+ssh "${to_ssh_host}" "rm -f /tmp/dump.sql"
+
+echo "====="
+
+ssh_mysql "${to_ssh_host}" "mysql -uroot -e 'SHOW SLAVE STATUS \G'"

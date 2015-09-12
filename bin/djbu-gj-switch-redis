@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -e
+
+from_ssh_host="$1"
+to_ssh_host="$2"
+
+echo "Make ${to_ssh_host} as redis master, and ${from_ssh_host} as slave."
+echo
+
+echo "confirm? (Press enter)"
+read
+
+if ssh "${to_ssh_host}" "redis-cli info replication" | grep 'role:master'; then
+  echo "! ${to_ssh_host} is master?" 1>&2
+  exit 1
+fi
+
+set -x
+
+ssh "${from_ssh_host}" "redis-cli client kill skipme yes"
+ssh "${to_ssh_host}" "redis-cli slaveof no one"
+ssh "${from_ssh_host}" "redis-cli slaveof ${to_ssh_host} 6379"

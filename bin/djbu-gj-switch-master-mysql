@@ -1,0 +1,104 @@
+#!/bin/bash
+
+if [ $# -lt 2 ]; then
+  echo "Usage: $0 from_ssh_host to_ssh_host" 1>&2
+  exit 50
+fi
+
+ssh_mysql() {
+  local batch
+
+  batch=0
+  if [ "_$1" = "_--batch" ]; then
+    batch=1
+    shift
+  fi
+
+  if [ "_$1" = "_${to_ssh_host}" ]; then
+    role=new
+  else
+    role=old
+  fi
+  if [ "${batch}" = "0" ]; then
+    echo "${role}: $2"
+  fi
+
+  ssh $1 "read MYSQL_PWD; export MYSQL_PWD; $2" <<< "${root_password}"
+}
+
+set -e
+
+from_ssh_host="$1"
+to_ssh_host="$2"
+
+echo "Switch mysql master, new master is ${to_ssh_host}, and new slave is ${from_ssh_host}."
+echo
+
+root_password="$(ruby -rio/console -e 'tty = IO.console; tty.print "mysql root password: "; puts tty.noecho { tty.gets.chomp }; tty.puts')"
+repl_password="$(ruby -rio/console -e 'tty = IO.console; tty.print "mysql repl password: "; puts tty.noecho { tty.gets.chomp }; tty.puts')"
+
+echo "[Step 0/X] Validate"
+
+if ! ssh_mysql "${from_ssh_host}" "mysql -uroot -e 'SELECT VERSION()'" >/dev/null; then
+  echo "! Invalid root pasword on old master ${from_ssh_host}" 1>&2
+  exit 1
+fi
+
+if ! ssh_mysql "${to_ssh_host}" "mysql -uroot -e 'SELECT VERSION()'" >/dev/null; then
+  echo "! Invalid root pasword on new master ${from_ssh_host}" 1>&2
+  exit 1
+fi
+
+
+
+if ! ( ssh_mysql --batch "${from_ssh_host}" "mysql -uroot -B -e 'SHOW SLAVE STATUS;'" | ruby -e 'rows = ARGF.readlines.map {|_| _.split(?\t) }; head = rows.shift; rows.map! {|row| Hash[row.map.with_index {|_,i| [head[i], _] }] }; x = rows[0].values_at("Slave_IO_Running", "Slave_SQL_Running").join(""); puts x' |grep -q NoNo ) ; then
+  echo "! ${from_ssh_host} is slave?" 1>&2
+  exit 1
+fi
+
+
+if ssh_mysql --batch "${to_ssh_host}" "mysql -uroot -B -e 'SHOW SLAVE STATUS;'" | ruby -e 'rows = ARGF.readlines.map {|_| _.split(?\t) }; head = rows.shift; rows.map! {|row| Hash[row.map.with_index {|_,i| [head[i], _] }] }; puts rows[0].values_at("Slave_IO_Running", "Slave_SQL_Running").join("")' |grep -q NoNo ; then
+  echo "! ${to_ssh_host} is not slave?" 1>&2
+  exit 1
+fi
+
+echo "[Step 1/X] letting old master read only"
+
+ssh_mysql "${from_ssh_host}" "mysql -uroot -e 'FLUSH TABLES WITH READ LOCK; SET GLOBAL read_only = 1;'"
+
+echo "[Step 2/X] waiting new master (slave) to finish run"
+
+master_status="$(ssh_mysql --batch "${from_ssh_host}" "mysql -uroot -B -e 'show master status;'"  | ruby -e 'rows = ARGF.readlines.map {|_| _.split(?\t) }; head = rows.shift; rows.map! {|row| Hash[row.map.with_index {|_,i| [head[i], _] }] }; puts rows[0].values_at("File", "Position").join(?\t)')"
+master_binlog_file="$(echo "${master_status}" | cut -f 1)"
+master_binlog_position="$(echo "${master_status}" | cut -f 2)"
+
+echo "* master status: file=${master_binlog_file} position=${master_binlog_position}"
+
+ssh_mysql "${to_ssh_host}" "mysql -uroot -e 'SELECT MASTER_POS_WAIT(\"${master_binlog_file}\", ${master_binlog_position})'"
+
+echo "[Step 3/X] prepare slave as new master"
+
+ssh_mysql "${to_ssh_host}" "mysql -uroot -e 'STOP SLAVE;'"
+ssh_mysql "${to_ssh_host}" "mysql -uroot -e 'RESET SLAVE;'"
+ssh_mysql "${to_ssh_host}" "mysql -uroot -e 'SET GLOBAL read_only = 1;'"
+
+echo "[Step 4/X] migrate old master to slave"
+
+ssh_mysql "${from_ssh_host}" "mysql -uroot -e 'UNLOCK TABLES; SET GLOBAL read_only = 1;'"
+ssh_mysql "${from_ssh_host}" "mysql -uroot -e 'RESET SLAVE;'"
+ssh_mysql "${from_ssh_host}" "mysql -uroot -e 'CHANGE MASTER TO MASTER_HOST = \"${to_ssh_host}\", MASTER_PORT = 3306, MASTER_USER = \"repl\", MASTER_PASSWORD = \"${repl_password}\", MASTER_AUTO_POSITION = 1;'"
+ssh_mysql "${from_ssh_host}" "mysql -uroot -e 'START SLAVE;'"
+
+echo "[Step 5/X] make new master writable"
+
+ssh_mysql "${to_ssh_host}" "mysql -uroot -e 'UNLOCK TABLES; SET GLOBAL read_only = 0;'"
+
+sleep 2
+
+echo "[Step 6/X] Clean up"
+
+ssh_mysql "${from_ssh_host}" "mysql -uroot -e 'SHOW SLAVE STATUS \G'"
+
+echo '---'
+
+ssh_mysql "${to_ssh_host}" "mysql -uroot -e 'SHOW MASTER STATUS \G'"
