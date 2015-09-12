@@ -45,13 +45,13 @@ if ! ssh_mysql "${from_ssh_host}" "mysql -uroot -e 'SELECT VERSION()'" >/dev/nul
 fi
 
 if ! ssh_mysql "${to_ssh_host}" "mysql -uroot -e 'SELECT VERSION()'" >/dev/null; then
-  echo "! Invalid root pasword on new master ${from_ssh_host}" 1>&2
+  echo "! Invalid root pasword on new master ${to_ssh_host}" 1>&2
   exit 1
 fi
 
 
 
-if ! ( ssh_mysql --batch "${from_ssh_host}" "mysql -uroot -B -e 'SHOW SLAVE STATUS;'" | ruby -e 'rows = ARGF.readlines.map {|_| _.split(?\t) }; head = rows.shift; rows.map! {|row| Hash[row.map.with_index {|_,i| [head[i], _] }] }; x = rows[0].values_at("Slave_IO_Running", "Slave_SQL_Running").join(""); puts x' |grep -q NoNo ) ; then
+if ! ( ssh_mysql --batch "${from_ssh_host}" "mysql -uroot -B -e 'SHOW SLAVE STATUS;'" | ruby -e 'input = ARGF.read; exit 0 if input.empty?; rows = input.lines.map {|_| _.split(?\t) }; head = rows.shift; rows.map! {|row| Hash[row.map.with_index {|_,i| [head[i], _] }] }; exit rows[0].values_at("Slave_IO_Running", "Slave_SQL_Running").join("") == "NoNo" ? 0 : 1' ) ; then
   echo "! ${from_ssh_host} is slave?" 1>&2
   exit 1
 fi
