@@ -16,5 +16,8 @@ include_cookbook 'nginx'
 include_cookbook 'mysql-client'
 include_cookbook 'redis-client'
 
+include_role 'mysql-server'
+include_role 'redis-server'
+
 include_role 'gjcase'
 include_role 'gj'
