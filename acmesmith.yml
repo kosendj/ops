@@ -1,0 +1,9 @@
+endpoint: https://acme-v01.api.letsencrypt.org/
+# endpoint: https://acme-staging.api.letsencrypt.org/
+storage:
+  type: s3
+  region: 'ap-northeast-1'
+  bucket: 'kosendj-acme'
+  prefix: 'private-prod'
+challenge_responders:
+  - route53: {}
