@@ -1,10 +1,8 @@
 # vim: ft=ruby
 hosted_zone "kosendj-bu.in." do
   rrset "kosendj-bu.in.", "A" do
-    ttl 300
-    resource_records(
-      "192.30.252.154",
-      "192.30.252.153"
+    dns_name(
+      "d20zpfto4ukp59.cloudfront.net",
     )
   end
 
