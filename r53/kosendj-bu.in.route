@@ -106,4 +106,17 @@ hosted_zone "kosendj-bu.in." do
     )
   end
 
+  rrset "akeno.pub.kosendj-bu.in", "A" do
+    ttl 60
+    resource_records(
+      "150.95.130.37",
+    )
+  end
+
+  rrset "akeno.pub.kosendj-bu.in", "AAAA" do
+    ttl 60
+    resource_records(
+      "2400:8500:1302:817:150:95:130:37",
+    )
+  end
 end
