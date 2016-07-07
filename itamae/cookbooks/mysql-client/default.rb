@@ -1,5 +1,14 @@
+case node[:release]
+when :vivid
+  package 'mysql-client-5.6' do
+  end
+when :xenial
+  package 'mysql-client-5.7' do
+  end
+end
+
 %w(
- mysql-client-5.6 libmysqlclient-dev
+ libmysqlclient-dev
 ).each do |pkg|
   package pkg do
   end

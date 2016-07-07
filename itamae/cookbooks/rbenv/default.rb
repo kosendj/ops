@@ -15,13 +15,13 @@ execute "/usr/bin/kdj-setup-rbenv" do
   not_if "test -d /usr/share/rbenv"
 end
 
-execute "/usr/bin/kdj-install-ruby 2.2.2 2.2.0" do
+execute "/usr/bin/kdj-install-ruby 2.3.1 2.3.0" do
   user 'root'
-  not_if "test -d /usr/share/rbenv/versions/2.2.2"
+  not_if "test -d /usr/share/rbenv/versions/2.3.1"
 end
 
 file "/usr/share/rbenv/version" do
-  content "2.2\n"
+  content "2.3\n"
   owner 'root'
   group 'root'
   mode  '0644'

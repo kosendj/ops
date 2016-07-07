@@ -7,7 +7,7 @@ remote_file "/etc/unbound/root-hints.named.cache" do
   mode  '0444'
 end
 
-execute 'unbound-anchor -v' do
+execute 'unbound-anchor -v; unbound-anchor -v' do
   not_if 'test -e /etc/unbound/root.key'
 end
 
