@@ -45,21 +45,21 @@ hosted_zone "kosendj-bu.in." do
   rrset "gj.kosendj-bu.in.", "CNAME" do
     ttl 300
     resource_records(
-      "rosia.pub-ops.kosendj-bu.in."
+      "akeno.pub.kosendj-bu.in.",
     )
   end
 
   rrset "gjcase.kosendj-bu.in.", "CNAME" do
     ttl 300
     resource_records(
-      "rosia.pub-ops.kosendj-bu.in."
+      "akeno.pub.kosendj-bu.in.",
     )
   end
 
   rrset "camo.kosendj-bu.in.", "CNAME" do
     ttl 300
     resource_records(
-      "rosia.pub-ops.kosendj-bu.in."
+      "akeno.pub.kosendj-bu.in.",
     )
   end
 
@@ -81,7 +81,7 @@ hosted_zone "kosendj-bu.in." do
   rrset "auth.kosendj-bu.in.", "CNAME" do
     ttl 300
     resource_records(
-      "rosia.pub-ops.kosendj-bu.in."
+      "akeno.pub.kosendj-bu.in.",
     )
   end
 
