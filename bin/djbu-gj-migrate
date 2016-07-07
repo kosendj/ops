@@ -25,7 +25,7 @@ fi
 
 echo 'stop gjcase sidekiq'
 
-for host in rosia.cnh.ops.kosendj-bu.in cyan.box.ops.kosendj-bu.in; do
+for host in akeno.cnh.c.kosendj-bu.in moeka.box.c.kosendj-bu.in; do
   echo "- ${host}"
   ssh -t "${host}" 'sudo systemctl stop gjcase-sidekiq' || :
 done
@@ -50,12 +50,12 @@ echo '=========='
 echo 'restart services'
 
 
-for host in rosia.cnh.ops.kosendj-bu.in; do
+for host in akeno.cnh.c.kosendj-bu.in; do
   echo "- ${host}"
   ssh -t "${host}" 'djbu-pull-config; sudo systemctl start gjcase-sidekiq; sudo systemctl reload gjcase; sudo systemctl restart gj' || :
 done
 
-for host in cyan.box.ops.kosendj-bu.in; do
+for host in moeka.box.c.kosendj-bu.in; do
   echo "- ${host}"
   ssh -t "${host}" 'djbu-pull-config; sudo systemctl reload gjcase; sudo systemctl restart gj' || :
 done
