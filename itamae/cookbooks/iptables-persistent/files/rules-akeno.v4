@@ -50,13 +50,14 @@ COMMIT
 -A FORWARD_DENY -i ens4 -j REJECT --reject-with icmp-host-prohibited
 -A FORWARD_DENY -i vti+ -j REJECT --reject-with icmp-host-prohibited
 -A FORWARD_LAN -d 172.18.0.0/15 -o vti+ -j ACCEPT
--A FORWARD_VPN -o ens4 -j ACCEPT
+-A FORWARD_VPN -d 172.20.0.0/21 -o ens4 -j ACCEPT
 -A INPUT_DENY -i ens4 -j REJECT --reject-with icmp-host-prohibited
 -A INPUT_DENY -i vti+ -j REJECT --reject-with icmp-host-prohibited
 -A INPUT_LAN -p tcp -m tcp --dport 53 -m comment --comment dns -j ACCEPT
 -A INPUT_LAN -p udp -m udp --dport 53 -m comment --comment dns -j ACCEPT
 -A INPUT_LAN -p tcp -m tcp --dport 5201 -m comment --comment iperf3 -j ACCEPT
--A INPUT_LAN -p tcp -m tcp --dport 10050:10051 -m comment --comment zabbix -j ACCEPT
+-A INPUT_LAN -p tcp -m tcp --dport 3306 -m comment --comment mysql -j ACCEPT
+-A INPUT_LAN -p tcp -m tcp --dport 6379 -m comment --comment redis -j ACCEPT
 -A INPUT_OPEN -p tcp -m tcp --dport 3722 -m comment --comment ssh -j ACCEPT
 -A INPUT_OPEN -p tcp -m tcp --dport 443 -m comment --comment https -j ACCEPT
 -A INPUT_OPEN -p tcp -m tcp --dport 80 -m comment --comment http -j ACCEPT
