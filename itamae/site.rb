@@ -3,6 +3,13 @@ require 'pathname'
 node[:_platform] = node[:platform]
 node[:platform] = nil
 
+node[:release] = {
+  '14.04' => :trusty, # tahr
+  '15.04' => :vivid,  # verbet
+  '15.10' => :wily,   # werewolf
+  '16.04' => :xenial, # xerus
+}[node[:platform_version]] or raise "Unknown node[:platform_version] #{node[:platform_version].inspect}"
+
 begin
   require 'itamae/secrets'
   node[:secrets] = Itamae::Secrets(File.join(__dir__, 'secrets'))
