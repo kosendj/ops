@@ -10,6 +10,8 @@ include_cookbook 'redis-client'
 
 include_cookbook 'app_directory'
 
+include_cookbook 'sqlite3'
+
 ###
 
 directory '/home/dj/app/gjcase' do
