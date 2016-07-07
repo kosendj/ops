@@ -1,3 +1,8 @@
+node.reverse_merge!(
+  iptables_persistent: {
+  },
+)
+
 package "netfilter-persistent" do
 end
 
