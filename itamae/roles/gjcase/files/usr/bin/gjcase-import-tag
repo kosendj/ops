@@ -1,0 +1,15 @@
+#!/bin/bash
+if [ "_$(whoami)" != "_dj" ]; then
+  echo "Run as dj user" 1>&2
+  exit 1
+fi
+
+if ! [ -n "$1" -o -n "$2" ]; then
+  echo "usage: $0 tumblr_tag gjcase_tag" 1>&2
+  exit 1
+fi
+
+set -x
+
+cd ~dj/app/gjcase/current
+exec ~dj/app/gjcase/shared/env.sh bundle exec env TUMBLR_TAG="$1" GJCASE_TAG="$2" rails runner 'TumblrImportJob::TagImporter.new(Tag.find_or_create_by!(name: ENV["GJCASE_TAG"]).id, ENV["TUMBLR_TAG"]).run!'

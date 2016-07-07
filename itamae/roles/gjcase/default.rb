@@ -50,6 +50,19 @@ end
 
 ###
 
+%w(
+  gjcase-import-tumblelog
+  gjcase-import-tag
+).each do |cmd|
+  remote_file "/usr/bin/#{cmd}" do
+    owner 'root'
+    group 'root'
+    mode  '0755'
+  end
+end
+
+###
+
 execute 'git clone https://github.com/kosendj/gjcase /home/dj/app/gjcase/git' do
   user 'dj'
   not_if 'test -d /home/dj/app/gjcase/git'
