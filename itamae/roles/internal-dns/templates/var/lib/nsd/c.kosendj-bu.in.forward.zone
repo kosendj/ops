@@ -1,0 +1,23 @@
+$TTL    60
+
+$ORIGIN c.kosendj-bu.in.
+
+@               IN      SOA     akeno.cnh.c.kosendj-bu.in. root.kosendj-bu.in. (
+                                2016070801  ; Serial
+                                3600            ; Refresh
+                                1800            ; Retry
+                                2419200         ; Expire
+                                30)             ; Negative Cache TTL
+                        NS akeno.cnh.c.kosendj-bu.in.
+
+rosia.cnh IN A 172.20.0.1
+akeno.cnh IN A 172.20.0.2
+
+moeka.box IN A 172.19.224.1
+moeka-srv.box IN A 172.19.128.1
+moeka-cl.box IN A 172.19.0.1
+
+; cyan.box IN A 172.19.128.10
+
+moa.box IN A 172.19.224.2
+chuchu.box IN A 172.19.0.2

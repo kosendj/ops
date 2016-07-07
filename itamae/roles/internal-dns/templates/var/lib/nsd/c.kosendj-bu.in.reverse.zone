@@ -1,0 +1,22 @@
+$TTL 60
+$ORIGIN 172.in-addr.arpa.
+
+@               IN      SOA     akeno.cnh.c.kosendj-bu.in. root.kosendj-bu.in. (
+                                2016070801  ; Serial
+                                3600            ; Refresh
+                                1800            ; Retry
+                                2419200         ; Expire
+                                30)             ; Negative Cache TTL
+                        NS akeno.cnh.c.kosendj-bu.in.
+
+1.0.20 IN PTR akeno.cnh.c.kosendj-bu.in.
+2.0.20 IN PTR akeno.cnh.c.kosendj-bu.in.
+
+1.224.19 IN PTR moeka.box.c.kosendj-bu.in.
+1.128.19 IN PTR moeka-srv.box.c.kosendj-bu.in.
+1.0.19 IN PTR moeka-cl.box.c.kosendj-bu.in.
+
+; 10.128.19 IN PTR cyan.box.c.kosendj-bu.in.
+
+2.224.19 IN PTR moa.box.c.kosendj-bu.in.
+2.0.19 IN PTR chuchu.box.c.kosendj-bu.in.

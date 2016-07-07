@@ -6,14 +6,14 @@ template '/etc/nsd/nsd.conf' do
   mode  '0640'
 end
 
-template '/var/lib/nsd/ops.kosendj-bu.in.forward.zone' do
+template '/var/lib/nsd/c.kosendj-bu.in.forward.zone' do
   owner 'root'
   group 'nsd'
   mode  '0640'
 end
 
 
-template '/var/lib/nsd/ops.kosendj-bu.in.reverse.zone' do
+template '/var/lib/nsd/c.kosendj-bu.in.reverse.zone' do
   owner 'root'
   group 'nsd'
   mode  '0640'
