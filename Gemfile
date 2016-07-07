@@ -5,9 +5,6 @@ gem 'sshkit', git: 'https://github.com/capistrano/sshkit.git'
 
 gem 'acmesmith'
 
-gem 'itamae', git: 'https://github.com/itamae-kitchen/itamae.git'
-gem 'itamae-secrets'
-
 gem 'net-telnet'
 gem 'net-ssh'
 

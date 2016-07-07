@@ -1,0 +1,13 @@
+ask_sudo_password: true
+inventory_providers:
+  file:
+    path: './hosts.yml'
+initializers:
+  - site.rb
+driver_options:
+  #  itamae_ssh:
+  #    itamae_options: ['-l', 'debug']
+  bundler:
+    # itamae_options: ['-l', 'debug']
+    bundle_without: 'hocho'
+    bundle_path: '/var/lib/itamae/bundler'

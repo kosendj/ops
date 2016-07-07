@@ -1,0 +1,53 @@
+GIT
+  remote: https://github.com/itamae-kitchen/itamae.git
+  revision: dc34f4d9959cc5fb2d30cbc387faa2f9d3f7aec8
+  specs:
+    itamae (1.9.8)
+      ansi
+      hashie
+      schash (~> 0.1.0)
+      specinfra (>= 2.37.0, < 3.0.0)
+      thor
+
+GIT
+  remote: https://github.com/sorah/hocho.git
+  revision: f5680b950d7e85cc06dbb9ad994b40f2d0de2208
+  specs:
+    hocho (0.1.0.beta1)
+      hashie
+      itamae
+      net-ssh
+      thor
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ansi (1.5.0)
+    hashie (3.4.4)
+    itamae-secrets (0.1.0)
+      thor
+    net-scp (1.2.1)
+      net-ssh (>= 2.6.5)
+    net-ssh (3.2.0)
+    net-telnet (0.1.1)
+    schash (0.1.2)
+    sfl (2.2)
+    specinfra (2.59.5)
+      net-scp
+      net-ssh (>= 2.7, < 4.0)
+      net-telnet
+      sfl
+    thor (0.19.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  hocho!
+  itamae!
+  itamae-secrets
+  net-ssh
+  net-telnet
+
+BUNDLED WITH
+   1.12.5

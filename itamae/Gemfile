@@ -1,0 +1,9 @@
+source 'https://rubygems.org'
+
+gem 'itamae', git: 'https://github.com/itamae-kitchen/itamae.git'
+gem 'itamae-secrets'
+gem 'hocho', git: 'https://github.com/sorah/hocho.git'
+
+gem 'net-telnet'
+gem 'net-ssh'
+
