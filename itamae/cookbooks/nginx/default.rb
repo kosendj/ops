@@ -64,6 +64,13 @@ template "/etc/nginx/utils/djbu_request_proto.conf" do
   notifies :reload, 'service[nginx]'
 end
 
+template "/etc/nginx/utils/force_https.conf" do
+  owner 'root'
+  group 'root'
+  mode  '0644'
+  notifies :reload, 'service[nginx]'
+end
+
 template "/etc/nginx/nginx.conf" do
   owner 'root'
   group 'root'
