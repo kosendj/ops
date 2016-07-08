@@ -7,8 +7,8 @@ if [ $# -lt 1 ]; then
   exit 50
 fi
 
-current_mysql_master="$(aws s3 cp s3://kosendj-config/gj-mysql-master -)"
-current_redis_master="$(aws s3 cp s3://kosendj-config/gj-redis-master -)"
+current_mysql_master="$(aws s3 cp --region us-east-1 s3://kosendj-config/gj-mysql-master -)"
+current_redis_master="$(aws s3 cp --region us-east-1 s3://kosendj-config/gj-redis-master -)"
 
 target_master="$1"
 
@@ -34,7 +34,7 @@ if [ "_${current_mysql_master}" != "_${target_master}" ]; then
   echo '=========='
   echo "mysql ${current_mysql_master} -> ${target_master}"
   $(dirname $0)/djbu-gj-switch-master-mysql "${current_mysql_master}" "${target_master}"
-  echo "${target_master}" | aws s3 cp - s3://kosendj-config/gj-mysql-master
+  echo "${target_master}" | aws s3 cp --region us-east-1 - s3://kosendj-config/gj-mysql-master
 fi
 
 
@@ -42,7 +42,7 @@ if [ "_${current_redis_master}" != "_${target_master}" ]; then
   echo '=========='
   echo "redis ${current_redis_master} -> ${target_master}"
   $(dirname $0)/djbu-gj-switch-redis "${current_redis_master}" "${target_master}"
-  echo "${target_master}" | aws s3 cp - s3://kosendj-config/gj-redis-master
+  echo "${target_master}" | aws s3 cp --region us-east-1 - s3://kosendj-config/gj-redis-master
 fi
 
 echo '=========='
