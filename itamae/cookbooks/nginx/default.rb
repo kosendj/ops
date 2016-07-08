@@ -3,8 +3,8 @@ end
 
 file "/etc/apt/sources.list.d/nginx.list" do
   content <<-EOF
-deb http://ppa.launchpad.net/nginx/development/ubuntu vivid main 
-deb-src http://ppa.launchpad.net/nginx/development/ubuntu vivid main 
+deb http://ppa.launchpad.net/nginx/development/ubuntu #{node[:release]} main
+deb-src http://ppa.launchpad.net/nginx/development/ubuntu #{node[:release]} main
   EOF
 
   owner 'root'
