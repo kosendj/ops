@@ -1,4 +1,10 @@
-include_role 'internal-dns'
+node.reverse_merge!(
+  dns_cache: {
+  }
+)
+
+include_role 'internal-dns' unless node[:dns_cache][:upstream]
+
 include_cookbook 'unbound'
 
 template '/etc/unbound/unbound.conf' do
