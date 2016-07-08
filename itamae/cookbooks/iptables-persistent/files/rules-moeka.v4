@@ -42,6 +42,8 @@ COMMIT
 -A INPUT -j INPUT_OPEN
 -A INPUT -s 169.254.225.0/24 -i vti+ -j INPUT_TUNNEL
 -A INPUT -s 172.18.0.0/15 -i eth_+ -j INPUT_LAN
+-A INPUT -i vti+ -j INPUT_LAN
+-A INPUT -i vti+ -j INPUT_SRV
 -A INPUT -i eth_srv -j INPUT_SRV
 -A INPUT -i eth_mgmt -j INPUT_SRV
 -A INPUT -i enp+ -j INPUT_WORLD

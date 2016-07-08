@@ -47,6 +47,7 @@ COMMIT
 -A INPUT -j INPUT_OPEN
 -A INPUT -i vti+ -j INPUT_LAN
 -A INPUT -i eth_+ -j INPUT_LAN
+-A INPUT -i vti+ -j INPUT_SRV
 -A INPUT -i eth_srv -j INPUT_SRV
 -A INPUT -i eth_mgmt -j INPUT_SRV
 -A INPUT -i eno+ -j INPUT_WORLD
