@@ -1,0 +1,57 @@
+#!/usr/local/bin/ruby
+require 'json'
+require 'fileutils'
+require 'openssl'
+
+def s3_get(path)
+  IO.popen(['aws', 's3', 'cp', path, '-'], 'r') do |io|
+    puts " * #{path}"
+    io.read.tap do
+      _, status = Process.waitpid2(io.pid)
+      raise "Failed to fetch #{path.inspect}" unless status.success?
+    end
+  end
+end
+
+conf = JSON.parse(File.read('/etc/djbu-acmesmith-fetcher.json'))
+
+ENV['HOME'] = '/root'
+ENV['AWS_DEFAULT_PROFILE'] = conf['aws_profile'] if conf['aws_profile']
+ENV['AWS_DEFAULT_REGION'] = conf['aws_region']
+ENV['AWS_REGION'] = conf['aws_region']
+bucket = conf['aws_s3_bucket']
+
+DIR = "/etc/ssl/own"
+
+conf['certificates'].each do |name, options|
+  prefix = "s3://#{bucket}/certs/#{name}/"
+
+  puts "=> #{name}"
+  active_path = File.join(DIR, "#{name}.version")
+
+  current = File.exist?(active_path) ? File.read(active_path).chomp : nil
+  latest = s3_get("#{prefix}current").chomp
+
+  puts "   current:#{current} latest:#{latest}"
+
+  next if current == latest
+
+  File.open(active_path, File::CREAT | File::RDWR) do |version|
+    version.flock(File::LOCK_EX)
+    version.truncate(0)
+
+    %w(cert chain fullchain).each do |cert_variant|
+      File.open(File.join(DIR, "#{name}.#{cert_variant}.crt"), 'w') do |io|
+        io.puts s3_get("#{prefix}#{latest}/#{cert_variant}.pem")
+      end
+    end
+
+    key_path = File.join(DIR, "#{name}.key")
+    File.open(key_path, 'w', 0640) do |io|
+      io.puts OpenSSL::PKey::RSA.new(s3_get("#{prefix}#{latest}/key.pem"), conf['passphrase']).to_pem
+    end
+    FileUtils.chown(options['owner'] || 'root', options['group'] || 'root', key_path)
+
+    version.puts latest
+  end
+end
