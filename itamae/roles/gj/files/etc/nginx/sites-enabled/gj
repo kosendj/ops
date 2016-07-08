@@ -10,7 +10,7 @@ server {
   access_log /var/log/nginx/access.ltsv.log ltsv;
   error_log  /var/log/nginx/gj.error.log;
 
-  add_header "Access-Control-Allow-Origin" "http://gjcase.kosendj-bu.in";
+  add_header "Access-Control-Allow-Origin" "https://gjcase.kosendj-bu.in";
 
   location / {
     proxy_http_version 1.1;
