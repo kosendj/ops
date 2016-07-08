@@ -15,3 +15,9 @@ include_cookbook 'nodejs'
 include_cookbook 'dj-user'
 
 include_recipe './systemd_logind.rb'
+
+directory '/usr/share/djbu' do
+  owner 'root'
+  group 'root'
+  mode  '0755'
+end

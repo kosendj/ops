@@ -1,0 +1,4 @@
+# vim: ft=sudoers
+Cmnd_Alias IPSEC_UPDOWN_CMD = /usr/share/djbu/site-gateway/ipsec-updown-privileged.sh
+ipsec ALL = (root) NOPASSWD: IPSEC_UPDOWN_CMD 
+Defaults!IPSEC_UPDOWN_CMD !requiretty
