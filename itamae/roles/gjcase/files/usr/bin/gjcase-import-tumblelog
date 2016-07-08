@@ -11,5 +11,6 @@ fi
 
 set -x
 
+export DISABLE_SPRING=1
 cd ~dj/app/gjcase/current
 exec ~dj/app/gjcase/shared/env.sh bundle exec env TUMBLELOG="$1" rails runner 'TumblrImportJob::Importer.new(ENV["TUMBLELOG"]).run!'

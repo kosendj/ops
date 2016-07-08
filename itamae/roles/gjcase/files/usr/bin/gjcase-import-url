@@ -1,0 +1,23 @@
+#!/bin/bash
+if [ "_$(whoami)" != "_dj" ]; then
+  echo "Run as dj user" 1>&2
+  exit 1
+fi
+
+if ! [ -n "$1" -o -n "$2" ]; then
+  echo "usage: $0 gjcase_tag url" 1>&2
+  exit 1
+fi
+
+export DISABLE_SPRING=1
+
+
+gjcase_tag="$1"
+
+cd ~dj/app/gjcase/current
+
+set -x
+set -e
+while shift && [ -n "$1" ]; do
+  ~dj/app/gjcase/shared/env.sh bundle exec env TUMBLR_URL="$1" GJCASE_TAG="$gjcase_tag" rails runner 'TumblrImportJob::SingleImporter.new(ENV["TUMBLR_URL"], Tag.find_or_create_by!(name: ENV["GJCASE_TAG"]).id).run!'
+done

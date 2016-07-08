@@ -55,6 +55,7 @@ end
 %w(
   gjcase-import-tumblelog
   gjcase-import-tag
+  gjcase-import-url
 ).each do |cmd|
   remote_file "/usr/bin/#{cmd}" do
     owner 'root'
