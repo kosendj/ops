@@ -15,5 +15,5 @@ template "/etc/h2o/h2o.conf" do
 end
 
 service 'h2o' do
-  action [:enable, :start]
+  action :enable
 end
