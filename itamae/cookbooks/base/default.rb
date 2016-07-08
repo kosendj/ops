@@ -14,6 +14,8 @@ include_cookbook 'rbenv'
 include_cookbook 'nodejs'
 include_cookbook 'dj-user'
 
+include_cookbook 'iperf3'
+
 include_recipe './systemd_logind.rb'
 
 directory '/usr/share/djbu' do
