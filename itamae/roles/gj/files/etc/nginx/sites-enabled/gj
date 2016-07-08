@@ -12,6 +12,9 @@ server {
 
   add_header "Access-Control-Allow-Origin" "https://gjcase.kosendj-bu.in";
 
+  include /etc/nginx/utils/djbu_request_proto.conf;
+  include /etc/nginx/utils/force_https.conf;
+
   location / {
     proxy_http_version 1.1;
     proxy_set_header  Upgrade $http_upgrade;
