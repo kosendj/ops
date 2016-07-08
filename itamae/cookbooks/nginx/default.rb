@@ -38,10 +38,30 @@ package 'nginx' do
   action :install
 end
 
+directory "/etc/nginx/conf.d" do
+  owner 'root'
+  group 'root'
+  mode  '0755'
+end
+
 directory "/etc/nginx/utils" do
   owner 'root'
   group 'root'
   mode  '0755'
+end
+
+template "/etc/nginx/conf.d/cidr.conf" do
+  owner 'root'
+  group 'root'
+  mode  '0644'
+  notifies :reload, 'service[nginx]'
+end
+
+template "/etc/nginx/utils/djbu_request_proto.conf" do
+  owner 'root'
+  group 'root'
+  mode  '0644'
+  notifies :reload, 'service[nginx]'
 end
 
 template "/etc/nginx/nginx.conf" do
