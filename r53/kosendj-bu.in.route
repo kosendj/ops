@@ -71,6 +71,13 @@ hosted_zone "kosendj-bu.in." do
     dns_name "d29wxpgbo7aeup.cloudfront.net."
   end
 
+  rrset "gjcase-storage-origin-s3custom.kosendj-bu.in.", "CNAME" do
+    ttl 300
+    resource_records(
+      "akeno.pub.kosendj-bu.in.",
+    )
+  end
+
   rrset "tj.kosendj-bu.in.", "CNAME" do
     ttl 300
     resource_records(
