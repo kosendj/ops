@@ -9,7 +9,7 @@ node.reverse_merge!(
       moeka2akeno: {
         leftid: '@moeka.cnh.c.kosendj-bu.in',
         rightid: '@akeno.cnh.c.kosendj-bu.in',
-        right: 'akeno.pub.kosendj-bu.in',
+        right: '150.95.130.37',
         ifname: 'cnh',
         inner_left: '169.254.225.2/30',
         inner_right: '169.254.225.1/30',
