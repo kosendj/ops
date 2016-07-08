@@ -52,7 +52,9 @@ COMMIT
 -A FORWARD_DENY -i ens4 -j REJECT --reject-with icmp-host-prohibited
 -A FORWARD_DENY -i vti+ -j REJECT --reject-with icmp-host-prohibited
 -A FORWARD_LAN -d 172.18.0.0/15 -o vti+ -j ACCEPT
+-A FORWARD_LAN -o ens3 -j ACCEPT
 -A FORWARD_VPN -d 172.20.0.0/21 -o ens4 -j ACCEPT
+-A FORWARD_VPN -o ens3 -j ACCEPT
 -A INPUT_DENY -i ens4 -j REJECT --reject-with icmp-host-prohibited
 -A INPUT_DENY -i vti+ -j REJECT --reject-with icmp-host-prohibited
 -A INPUT_LAN -p tcp -m tcp --dport 53 -m comment --comment dns -j ACCEPT
