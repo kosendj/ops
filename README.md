@@ -20,16 +20,14 @@ cap r53 dry-run
 cap r53 apply
 ```
 
-## Bootstrapping physical servers
-
-enable sshd then:
+## Itamae
 
 ```
-$ scp bootstrap/${target_hostname}.sh dj@${target}:bootstrap.sh
-$ ssh dj@${target}
-remote $ sudo bash bootstrap.sh
-
+$ cd itamae/
+$ bundle exec hocho apply --dry-run akeno
+$ bundle exec hocho apply akeno
 ```
+
 
 ## Infrataster
 
