@@ -15,6 +15,7 @@ node.reverse_merge!(
         inner_left: '169.254.225.1/30',
         inner_right: '169.254.225.2/30',
         static_routes: %w(172.19.0.0/16),
+        mobike: true,
         mark: 10,
         psk: node[:secrets][:'site_gateway-psk'],
       },
