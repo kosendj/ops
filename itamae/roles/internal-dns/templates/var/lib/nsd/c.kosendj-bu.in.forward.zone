@@ -10,14 +10,11 @@ $ORIGIN c.kosendj-bu.in.
                                 30)             ; Negative Cache TTL
                         NS akeno.cnh.c.kosendj-bu.in.
 
-rosia.cnh IN A 172.20.0.1
 akeno.cnh IN A 172.20.0.2
 
 moeka.box IN A 172.19.224.1
 moeka-srv.box IN A 172.19.128.1
 moeka-cl.box IN A 172.19.0.1
-
-; cyan.box IN A 172.19.128.10
 
 moa.box IN A 172.19.224.2
 chuchu.box IN A 172.19.0.2
