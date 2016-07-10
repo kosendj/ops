@@ -20,6 +20,12 @@ directory '/tmp/nginx-tmp' do
   mode  '0755'
 end
 
+remote_file '/etc/tmpfiles.d/djbu-nginx.conf' do
+  owner 'root'
+  group 'root'
+  mode  '0644'
+end
+
 directory '/var/lib/nginx-cache' do
   owner 'www-data'
   group 'www-data'
